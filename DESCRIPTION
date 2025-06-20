@@ -32,3 +32,8 @@ RoxygenNote: 7.3.2
 LazyData: true
 URL: https://github.com/paulefrens/reptiledb.data
 BugReports: https://github.com/paulefrens/reptiledb.data/issues
+Imports: 
+    httr,
+    rvest,
+    stringr,
+    tibble
