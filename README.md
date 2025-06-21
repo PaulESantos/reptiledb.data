@@ -9,6 +9,8 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/reptiledb.data)](https://CRAN.R-project.org/package=reptiledb.data)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/reptiledb.data?color=green)](https://cran.r-project.org/package=reptiledb.data)
+[![](http://cranlogs.r-pkg.org/badges/last-week/reptiledb.data?color=green)](https://cran.r-project.org/package=reptiledb.data)
 <!-- badges: end -->
 
 T# 🦎 reptiledb.data: Access the Reptile Database in R
