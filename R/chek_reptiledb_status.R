@@ -9,11 +9,31 @@
 #' @param check_connection Logical. If TRUE, checks internet connection before
 #'   attempting to access online data. Default is TRUE.
 #'
+#' @return A list containing the following elements:
+#'   \describe{
+#'     \item{update_needed}{Logical. TRUE if an update is needed, FALSE otherwise}
+#'     \item{local_info}{List. Information about the local dataset}
+#'     \item{remote_info}{List. Information about the remote dataset}
+#'     \item{message}{Character. Status message describing the comparison result}
+#'     \item{recommendation}{Character. Recommendation for user action}
+#'     \item{local_date}{Character. Date of local data in YYYY-MM-DD format}
+#'     \item{remote_date}{Character. Date of remote data in YYYY-MM-DD format (if available)}
+#'     \item{remote_filename}{Character. Filename of the remote file (if available)}
+#'     \item{days_difference}{Numeric. Number of days difference between local and remote data (if both dates available)}
+#'   }
+#'   If an error occurs or internet connection is not available, only the message
+#'   element will contain relevant error information.
+#'
 #' @examples
-#' \dontrun{
-#' # Silent check (no messages)
+#' \donttest{
+#' # Silent check (no messages) - requires internet connection
 #' update_status <- check_data_update(silent = TRUE)
-
+#'
+#' # Verbose check with connection verification
+#' update_status <- check_data_update(silent = FALSE, check_connection = TRUE)
+#'
+#' # Check without internet connection verification
+#' update_status <- check_data_update(check_connection = FALSE)
 #' }
 #'
 #' @export
@@ -40,6 +60,7 @@ check_data_update <- function(silent = FALSE,
   # Extract date from local dataset name
   local_date <- "2025-05-01"
   result$local_date <- local_date
+
   # Check internet connection if requested
   if (check_connection) {
     if (!check_internet_connection()) {
@@ -48,12 +69,11 @@ check_data_update <- function(silent = FALSE,
       return(result)
     }
   }
-  result$message
+
   # Get latest remote file information
   tryCatch({
     # Get latest download URL
     remote_url <- get_latest_reptile_download(return_info = FALSE)
-    remote_url
 
     if (is.null(remote_url)) {
       result$message <- "Could not retrieve latest file information from The Reptile Database."
@@ -64,26 +84,30 @@ check_data_update <- function(silent = FALSE,
     # Extract filename from URL
     remote_filename <- basename(remote_url)
     result$remote_filename <- remote_filename
+
     # Extract date from remote filename (pattern: reptile_checklist_YYYY_MM.xlsx)
     remote_date <- extract_date_from_name(remote_filename, "remote")
 
     result$remote_date <- format(as.Date(remote_date), "%Y-%m-%d")
-    result$remote_date
 
     # Compare dates if both are available
     if (!is.null(local_date) && !is.null(remote_date)) {
       days_diff <- as.numeric(as.Date(remote_date) - as.Date(local_date))
-      days_diff
       result$days_difference <- days_diff
 
       if (remote_date == local_date) {
         result$message <- sprintf(
           "Your data is up to date. Local and remote versions match."
         )
+        result$update_needed <- FALSE
+      } else if (local_date < remote_date) {
+        result$message <- "Your data is outdated. Local and remote versions differ."
+        result$update_needed <- TRUE
+        result$recommendation <- "Visit http://www.reptile-database.org/data/ to download the latest data."
+      } else {
+        result$message <- "Your local data is newer than the remote version."
+        result$update_needed <- FALSE
       }
-    } else if (local_date < remote_date){
-      result$message <- "Your data is outdated. Local and remote versions differ."
-
     } else {
       result$message <- "Could not extract dates for comparison from filenames."
     }
@@ -100,12 +124,18 @@ check_data_update <- function(silent = FALSE,
     if (!silent) warning(result$message)
   })
 
-  #return(result$message)
+  return(result)
 }
+
 #' Extract date from dataset name or filename
+#'
 #' @param name Dataset name or filename
 #' @param type Type of name ("local" or "remote")
-#' @return Date object or NULL if extraction fails
+#'
+#' @return A Date object representing the extracted date, or NULL if extraction fails.
+#'   For local datasets, expects pattern "reptiledb_MMYYYY" (e.g., reptiledb_012025).
+#'   For remote files, expects pattern "reptile_checklist_YYYY_MM.xlsx".
+#'
 extract_date_from_name <- function(name, type = "local") {
   if (is.null(name) || is.na(name)) return(NULL)
 
@@ -140,6 +170,7 @@ extract_date_from_name <- function(name, type = "local") {
 
   return(NULL)
 }
+
 #' Check Internet Connection
 #'
 #' Helper function to check if internet connection is available
@@ -147,7 +178,6 @@ extract_date_from_name <- function(name, type = "local") {
 #' @return Logical. TRUE if internet is available, FALSE otherwise.
 #'
 #' @keywords internal
-
 check_internet_connection <- function() {
   tryCatch(class(httr::GET("http://www.google.com/")) == "response",
            error = function(e) {
@@ -155,6 +185,7 @@ check_internet_connection <- function() {
            }
   )
 }
+
 #' Get Latest Reptile Database Download Link
 #'
 #' This function retrieves the most recent download link for reptile database files
@@ -171,15 +202,16 @@ check_internet_connection <- function() {
 #'   about the found file. If FALSE, returns only the URL. Default is FALSE.
 #'
 #' @return If \code{return_info = FALSE}, returns a character string with the URL
-#'   of the most recent file. If \code{return_info = TRUE}, returns a list containing:
-#'   \itemize{
-#'     \item \code{url}: The complete URL of the file
-#'     \item \code{filename}: The name of the file
-#'     \item \code{file_type}: The file extension
-#'     \item \code{extraction_date}: The date when the link was extracted
-#'     \item \code{source_page}: The source webpage URL
+#'   of the most recent file, or NULL if no suitable file is found.
+#'   If \code{return_info = TRUE}, returns a list containing:
+#'   \describe{
+#'     \item{url}{Character. The complete URL of the file}
+#'     \item{filename}{Character. The name of the file}
+#'     \item{file_type}{Character. The file extension}
+#'     \item{extraction_date}{Date. The date when the link was extracted}
+#'     \item{source_page}{Character. The source webpage URL}
 #'   }
-#'   Returns NULL if no suitable file is found.
+#'   Returns NULL if no suitable file is found or if an error occurs during web scraping.
 #'
 #' @details The function performs web scraping on the specified URL to find
 #'   download links. It prioritizes files from the current year, but will fall
@@ -189,8 +221,8 @@ check_internet_connection <- function() {
 #'   These packages must be installed before using this function.
 #'
 #' @examples
-#' \dontrun{
-#' # Get just the URL
+#' \donttest{
+#' # Get just the URL - requires internet connection
 #' url <- get_latest_reptile_download()
 #'
 #' # Get detailed information
@@ -231,14 +263,6 @@ get_latest_reptile_download <- function(base_url = "http://www.reptile-database.
 
   if (!is.logical(return_info) || length(return_info) != 1) {
     stop("return_info must be a single logical value")
-  }
-
-  # Required packages check
-  required_packages <- c("rvest", "dplyr", "stringr")
-  missing_packages <- required_packages[!sapply(required_packages, requireNamespace, quietly = TRUE)]
-
-  if (length(missing_packages) > 0) {
-    stop(paste("Required packages not found:", paste(missing_packages, collapse = ", ")))
   }
 
   tryCatch({
@@ -318,4 +342,3 @@ get_latest_reptile_download <- function(base_url = "http://www.reptile-database.
     stop(paste("Error accessing the webpage:", e$message))
   })
 }
-

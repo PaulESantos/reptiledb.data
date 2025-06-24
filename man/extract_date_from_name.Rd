@@ -12,7 +12,9 @@ extract_date_from_name(name, type = "local")
 \item{type}{Type of name ("local" or "remote")}
 }
 \value{
-Date object or NULL if extraction fails
+A Date object representing the extracted date, or NULL if extraction fails.
+For local datasets, expects pattern "reptiledb_MMYYYY" (e.g., reptiledb_012025).
+For remote files, expects pattern "reptile_checklist_YYYY_MM.xlsx".
 }
 \description{
 Extract date from dataset name or filename

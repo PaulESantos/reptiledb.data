@@ -9,18 +9,10 @@ Authors@R: c(
         email = "paulefrens@gmail.com",
         comment = c(ORCID = "0000-0002-6635-0375")
     ))
-Description: Provides easy access to 'The Reptile Database', a comprehensive 
-    catalogue of all living reptile species and their classification. This 
-    package contains taxonomic data for over 10,000 reptile species including 
-    approximately 2,800 subspecies, covering all living snakes, lizards, 
-    turtles, amphisbaenians, tuataras, and crocodiles. The dataset includes 
-    taxonomic names and synonyms, distribution data, type specimens, and 
-    literature references, making it ready for herpetological research and 
-    analysis. Data is sourced from 'The Reptile Database' 
-    <http://www.reptile-database.org/>.
+Description: Provides easy access to 'The Reptile Database', a comprehensive catalogue of all living reptile species and their classification. This package includes taxonomic data for over 10,000 reptile species, approximately 2,800 of which are subspecies, covering all extant reptiles. The dataset features taxonomic names, synonyms, distribution data, type specimens, and literature references, making it ready for research and analysis. Data is sourced from 'The Reptile Database' <http://www.reptile-database.org/>.
 License: MIT + file LICENSE
 Depends: 
-    R (>= 3.5.0)
+    R (>= 4.1.0)
 Suggests: 
     testthat (>= 3.0.0),
     knitr,
@@ -30,10 +22,11 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 LazyData: true
-URL: https://github.com/paulefrens/reptiledb.data
-BugReports: https://github.com/paulefrens/reptiledb.data/issues
+URL: https://github.com/PaulESantos/reptiledb.data
+BugReports: https://github.com/PaulESantos/reptiledb.data/issues
 Imports: 
     httr,
     rvest,
     stringr,
     tibble
+Maintainer: Paul Efren Santos Andrade <paulefrens@gmail.com>

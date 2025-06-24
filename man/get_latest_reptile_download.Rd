@@ -26,15 +26,16 @@ about the found file. If FALSE, returns only the URL. Default is FALSE.}
 }
 \value{
 If \code{return_info = FALSE}, returns a character string with the URL
-of the most recent file. If \code{return_info = TRUE}, returns a list containing:
-\itemize{
-\item \code{url}: The complete URL of the file
-\item \code{filename}: The name of the file
-\item \code{file_type}: The file extension
-\item \code{extraction_date}: The date when the link was extracted
-\item \code{source_page}: The source webpage URL
+of the most recent file, or NULL if no suitable file is found.
+If \code{return_info = TRUE}, returns a list containing:
+\describe{
+\item{url}{Character. The complete URL of the file}
+\item{filename}{Character. The name of the file}
+\item{file_type}{Character. The file extension}
+\item{extraction_date}{Date. The date when the link was extracted}
+\item{source_page}{Character. The source webpage URL}
 }
-Returns NULL if no suitable file is found.
+Returns NULL if no suitable file is found or if an error occurs during web scraping.
 }
 \description{
 This function retrieves the most recent download link for reptile database files
@@ -50,8 +51,8 @@ The function requires the following packages: rvest, dplyr, and stringr.
 These packages must be installed before using this function.
 }
 \examples{
-\dontrun{
-# Get just the URL
+\donttest{
+# Get just the URL - requires internet connection
 url <- get_latest_reptile_download()
 
 # Get detailed information
