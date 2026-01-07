@@ -2,48 +2,48 @@
 % Please edit documentation in R/chek_reptiledb_status.R
 \name{check_data_update}
 \alias{check_data_update}
-\title{Check if reptile database data needs updating based on date comparison}
+\title{Check if reptile database data needs updating}
 \usage{
-check_data_update(silent = FALSE, check_connection = TRUE)
+check_data_update(
+  version_date = "2025-09-01",
+  silent = FALSE,
+  check_connection = TRUE
+)
 }
 \arguments{
-\item{silent}{Logical. If TRUE, suppresses messages and only returns results.
-Default is FALSE.}
+\item{version_date}{Character string indicating the most recent date of the data source.}
 
-\item{check_connection}{Logical. If TRUE, checks internet connection before
-attempting to access online data. Default is TRUE.}
+\item{silent}{Logical. If TRUE, suppresses all messages and returns only the
+result object. Default is FALSE.}
+
+\item{check_connection}{Logical. If TRUE, verifies internet connection before
+attempting to check for updates. Default is TRUE.}
 }
 \value{
-A list containing the following elements:
+An S3 object of class "reptile_update_check" with the following components:
 \describe{
-\item{update_needed}{Logical. TRUE if an update is needed, FALSE otherwise}
-\item{local_info}{List. Information about the local dataset}
-\item{remote_info}{List. Information about the remote dataset}
-\item{message}{Character. Status message describing the comparison result}
-\item{recommendation}{Character. Recommendation for user action}
-\item{local_date}{Character. Date of local data in YYYY-MM-DD format}
-\item{remote_date}{Character. Date of remote data in YYYY-MM-DD format (if available)}
-\item{remote_filename}{Character. Filename of the remote file (if available)}
-\item{days_difference}{Numeric. Number of days difference between local and remote data (if both dates available)}
+\item{needs_update}{Logical. TRUE if update is available}
+\item{local_date}{Date. Version date of local data}
+\item{remote_date}{Date. Version date of remote data (if available)}
+\item{days_behind}{Integer. Days between local and remote versions}
+\item{download_url}{Character. URL to download latest data}
+\item{status}{Character. One of "current", "outdated", "newer", "unknown", "no_connection"}
 }
-If an error occurs or internet connection is not available, only the message
-element will contain relevant error information.
 }
 \description{
-This function checks if the local reptile database data is up-to-date by
-comparing the date extracted from the local dataset name with the date
-from the latest available file on The Reptile Database website.
+Compares the local reptile database version with the latest available
+version on The Reptile Database website and provides user-friendly feedback.
 }
 \examples{
 \donttest{
-# Silent check (no messages) - requires internet connection
-update_status <- check_data_update(silent = TRUE)
+# Check with user-friendly messages
+check_data_update()
 
-# Verbose check with connection verification
-update_status <- check_data_update(silent = FALSE, check_connection = TRUE)
-
-# Check without internet connection verification
-update_status <- check_data_update(check_connection = FALSE)
+# Silent check for programmatic use
+result <- check_data_update(silent = TRUE)
+if (result$needs_update) {
+  message("Update available!")
+}
 }
 
 }

@@ -2,71 +2,51 @@
 % Please edit documentation in R/chek_reptiledb_status.R
 \name{get_latest_reptile_download}
 \alias{get_latest_reptile_download}
-\title{Get Latest Reptile Database Download Link}
+\title{Get Latest Reptile Database Download Information}
 \usage{
 get_latest_reptile_download(
   base_url = "http://www.reptile-database.org/data/",
-  current_year = as.numeric(format(Sys.Date(), "\%Y")),
-  file_types = c("xls", "xlsx", "zip"),
+  current_year = as.integer(format(Sys.Date(), "\%Y")),
+  file_types = c("xlsx", "xls", "zip"),
   return_info = FALSE
 )
 }
 \arguments{
-\item{base_url}{Character string. The base URL of the reptile database data page.
-Default is "http://www.reptile-database.org/data/".}
+\item{base_url}{Character. The base URL of the data page.
+Default: "http://www.reptile-database.org/data/"}
 
-\item{current_year}{Numeric. The current year to search for files.
-Default is the current system year.}
+\item{current_year}{Numeric. Year to prioritize in search.
+Default: current system year}
 
 \item{file_types}{Character vector. File extensions to search for.
-Default is c("xls", "xlsx", "zip").}
+Default: c("xlsx", "xls", "zip")}
 
-\item{return_info}{Logical. If TRUE, returns a list with detailed information
-about the found file. If FALSE, returns only the URL. Default is FALSE.}
+\item{return_info}{Logical. If TRUE, returns detailed information list.
+If FALSE, returns only the URL string. Default: FALSE}
 }
 \value{
-If \code{return_info = FALSE}, returns a character string with the URL
-of the most recent file, or NULL if no suitable file is found.
-If \code{return_info = TRUE}, returns a list containing:
+If \code{return_info = FALSE}: Character string with the download URL, or NULL
+
+If \code{return_info = TRUE}: A list with:
 \describe{
-\item{url}{Character. The complete URL of the file}
-\item{filename}{Character. The name of the file}
-\item{file_type}{Character. The file extension}
-\item{extraction_date}{Date. The date when the link was extracted}
-\item{source_page}{Character. The source webpage URL}
+\item{url}{Complete download URL}
+\item{filename}{File name}
+\item{file_type}{File extension}
+\item{checked_at}{Timestamp of check}
+\item{source_page}{Source webpage URL}
 }
-Returns NULL if no suitable file is found or if an error occurs during web scraping.
 }
 \description{
-This function retrieves the most recent download link for reptile database files
-from the Reptile Database website. It searches for files from the current year
-first, and if none are found, searches for files from the previous year.
-}
-\details{
-The function performs web scraping on the specified URL to find
-download links. It prioritizes files from the current year, but will fall
-back to the previous year if no current year files are available.
-
-The function requires the following packages: rvest, dplyr, and stringr.
-These packages must be installed before using this function.
+Retrieves information about the most recent reptile database file
+available for download from the official website.
 }
 \examples{
 \donttest{
-# Get just the URL - requires internet connection
+# Get download URL
 url <- get_latest_reptile_download()
 
 # Get detailed information
 info <- get_latest_reptile_download(return_info = TRUE)
-
-# Search for specific file types
-zip_url <- get_latest_reptile_download(file_types = "zip")
-
-# Search for files from a specific year
-url_2024 <- get_latest_reptile_download(current_year = 2024)
 }
 
-}
-\seealso{
-\url{http://www.reptile-database.org/} for more information about
-the Reptile Database.
 }

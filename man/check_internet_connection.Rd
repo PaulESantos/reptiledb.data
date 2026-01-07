@@ -7,9 +7,9 @@
 check_internet_connection()
 }
 \value{
-Logical. TRUE if internet is available, FALSE otherwise.
+Logical. TRUE if internet is available
 }
 \description{
-Helper function to check if internet connection is available
+Check Internet Connection
 }
 \keyword{internal}

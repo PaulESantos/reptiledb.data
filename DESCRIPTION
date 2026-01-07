@@ -25,8 +25,8 @@ LazyData: true
 URL: https://github.com/PaulESantos/reptiledb.data
 BugReports: https://github.com/PaulESantos/reptiledb.data/issues
 Imports: 
+    cli,
     httr,
     rvest,
-    stringr,
-    tibble
+    stringr
 Maintainer: Paul Efren Santos Andrade <paulefrens@gmail.com>
