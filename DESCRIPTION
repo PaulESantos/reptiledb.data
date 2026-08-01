@@ -1,6 +1,6 @@
 Package: reptiledb.data
 Title: Reptile Database Data
-Version: 0.0.0.2
+Version: 0.0.1
 Authors@R: c(
     person(
         given = "Paul Efren",
@@ -20,13 +20,17 @@ Suggests:
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 LazyData: true
 URL: https://github.com/PaulESantos/reptiledb.data
 BugReports: https://github.com/PaulESantos/reptiledb.data/issues
 Imports: 
     cli,
+    dplyr,
     httr,
+    purrr,
+    readxl,
     rvest,
-    stringr
+    stringr,
+    tidyr
 Maintainer: Paul Efren Santos Andrade <paulefrens@gmail.com>
+Config/roxygen2/version: 8.0.0
