@@ -33,7 +33,7 @@
 #' }
 #'
 #' @export
-check_data_update <- function(version_date = "2025-09-01",
+check_data_update <- function(version_date = "2026-06-01",
                               silent = FALSE,
                               check_connection = TRUE) {
 

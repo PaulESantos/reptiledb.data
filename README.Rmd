@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# reptiledb.data
+# 🦎 reptiledb.data: Access the Reptile Database in R
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -22,9 +22,7 @@ knitr::opts_chunk$set(
 [![](http://cranlogs.r-pkg.org/badges/last-week/reptiledb.data?color=green)](https://cran.r-project.org/package=reptiledb.data)
 <!-- badges: end -->
 
-T# 🦎 reptiledb.data: Access the Reptile Database in R
-
-`reptiledb.data` provides easy access to the [Reptile Database](http://www.reptile-database.org/), a comprehensive global catalogue of all living reptile species. Developed by **PaulESantos**, this R package includes a complete snapshot of the database as ready-to-use R data objects for taxonomy, biodiversity research, and comparative analyses.
+`reptiledb.data` provides easy access to [The Reptile Database](http://www.reptile-database.org/), a comprehensive global catalogue of all living reptile species. Developed by **PaulESantos**, this R package includes curated snapshots of the database as ready-to-use R data objects for taxonomy, biodiversity research, and comparative analyses, along with automated utilities to check and fetch online updates.
 
 ---
 
@@ -47,8 +45,6 @@ It currently includes:
 - Distribution and type locality data
 - Literature references and nomenclatural information
 
-Although the focus is on taxonomy, future additions may include ecological and behavioral traits.
-
 ---
 
 ## 📦 Installation
@@ -66,33 +62,69 @@ Or install the development version from GitHub:
 pak::pak("PaulESantos/reptiledb.data")
 ```
 
+---
+
 ## ⚡ Quick Start
+
+### 1. Using Included Snapshots
+
+The package comes pre-packaged with structured datasets:
+
+- `reptiledb_062026` (Latest snapshot - June 2026, 14,719 entries)
+- `reptiledb_092025` (September 2025 snapshot, 14,585 entries)
+- `reptiledb_012025` (January 2025 snapshot, 14,539 entries)
 
 ```{r}
 library(reptiledb.data)
 
-# Load the main dataset
-data(reptiledb_012025)
+# Load the latest included dataset snapshot
+data(reptiledb_062026)
 
-# View the structure of the dataset
-str(reptiledb_012025)
+# View summary structure
+str(reptiledb_062026)
 
-# Get the total number of records
-nrow(reptiledb_012025)
+# Total records
+nrow(reptiledb_062026)
 
-# Count the number of unique accepted species
-length(unique(reptiledb_012025$species))
+# Unique accepted species
+length(unique(reptiledb_062026$species))
 ```
 
+### 2. Checking for Online Updates
+
+You can check if a newer checklist has been published on [The Reptile Database](http://www.reptile-database.org/data/):
+
+```{r, eval = FALSE}
+# Check if a new version is available online
+check_data_update()
+```
+
+### 3. Fetching the Latest Online Data Automatically
+
+Fetch and clean the latest live online checklist from The Reptile Database server:
+
+```{r, eval = FALSE}
+# Download, clean, and cache the latest database online
+latest_data <- fetch_latest_reptile_data(cache = TRUE)
+head(latest_data)
+```
+
+---
+
+## 🤖 Automated Database Updates
+
+This package features an automated maintainer workflow via GitHub Actions that runs monthly. It checks for new releases on The Reptile Database server, automatically downloads and cleans raw files, creates a new snapshot dataset, updates package documentation, and opens a Pull Request.
+
+---
 
 ## 📖 Citation & Credits
 
-The data included in this package is derived from the Reptile Database, curated by a network of volunteer experts and guided by a Scientific Advisory Board. Please cite the database appropriately when using it in research.
+The data included in this package is derived from The Reptile Database, curated by a network of volunteer experts and guided by a Scientific Advisory Board. Please cite the database appropriately when using it in research:
+
+> Uetz, P., Freed, P., Aguilar, R., Reyes, F., Kudera, J. & Hošek, J. (eds.) (2026) The Reptile Database, http://www.reptile-database.org.
+
+---
 
 ## 🙋 Contribute
 
-This package is maintained by `PaulESantos`. Contributions, issue reports, and suggestions are welcome via GitHub.
-
-
-
-
+This package is maintained by `PaulESantos`. Contributions, issue reports, and suggestions are welcome via [GitHub Issues](https://github.com/PaulESantos/reptiledb.data/issues).

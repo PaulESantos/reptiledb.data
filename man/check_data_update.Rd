@@ -5,7 +5,7 @@
 \title{Check if reptile database data needs updating}
 \usage{
 check_data_update(
-  version_date = "2025-09-01",
+  version_date = "2026-06-01",
   silent = FALSE,
   check_connection = TRUE
 )

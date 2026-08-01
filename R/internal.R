@@ -1,2 +1,20 @@
-# ---------------------------------------------------------------
-utils::globalVariables(c("version_date"))
+utils::globalVariables(c(
+  "version_date",
+  "author",
+  "change",
+  "epithet",
+  "family",
+  "genus",
+  "rdb_sp_id",
+  "species",
+  "species_author",
+  "species_name_year",
+  "subspecie_author_info",
+  "subspecies",
+  "subspecies_name",
+  "subspecies_name_author",
+  "subspecies_year",
+  "nomenclature_change",
+  "nomenclature_change_species"
+))
+

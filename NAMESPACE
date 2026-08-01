@@ -2,4 +2,6 @@
 
 S3method(print,reptile_update_check)
 export(check_data_update)
+export(clean_reptile_data)
+export(fetch_latest_reptile_data)
 export(get_latest_reptile_download)

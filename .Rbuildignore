@@ -5,3 +5,6 @@
 ^cran-comments\.md$
 ^data-raw$
 ^data-raw/reptile_checklist_2025_09.xlsx$
+^\.agents$
+^\.github$
+
